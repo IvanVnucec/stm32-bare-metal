@@ -8,4 +8,6 @@ struct reg {
 
     static void write(const std::uint32_t val) { *reinterpret_cast<volatile std::uint32_t *>(addr) = val; }
     static std::uint32_t read() { return *reinterpret_cast<volatile std::uint32_t *>(addr); }
+    static void mask(const std::uint32_t val) { write(val | read()); }
+    static void clear(const std::uint32_t val) { write(~val & read()); }
 };

@@ -20,17 +20,23 @@ using gpio_c = gpio<0x40011000>;
 
 template<typename gpio, int pin_n>
 struct output_pin {
-    static_assert(pin_n < 32);
+    static constexpr int max_num_pins = 16;
+    static_assert(pin_n < max_num_pins);
 
     static void init() {
-        // general purpose output push pull 
-        gpio::crh::write(0b0011 << 20);
+        // general purpose output push pull
+        if constexpr (pin_n < max_num_pins/2) {
+            gpio::crl::write(0b0011 << 20);
+        } else {
+            gpio::crh::write(0b0011 << 20);
+        }
     }
+
     static void set_state(const bool state) {
         if (state == true)
-            gpio::bsrr::write(1 << 13);
+            gpio::bsrr::write(1 << pin_n);
         else 
-            gpio::bsrr::write(1 << 29);
+            gpio::bsrr::write(1 << (max_num_pins + pin_n));
     }
 };
 

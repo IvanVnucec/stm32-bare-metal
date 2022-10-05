@@ -2,7 +2,7 @@
 
 TARGET = main
 DEBUG = 1
-OPT = -Og
+OPT = -Os
 BUILD_DIR = build
 
 C_SOURCES =  \
