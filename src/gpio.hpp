@@ -35,3 +35,9 @@ struct output_pin {
             gpio::bsrr::write(1 << 29);
     }
 };
+
+template<typename output_pin>
+struct inverted {
+    static void init() { output_pin::init(); }
+    static void set_state(const bool state) { output_pin::set_state(not state); }
+};
