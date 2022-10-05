@@ -1,14 +1,14 @@
-#include "led.hpp"
+#include "bsp.hpp"
 
 int main()
 {
-    led_green::init();
+    bsp::init();
 
-    while (1)
+    while (true)
     {
-        led_green::turn_on();
+        bsp::led_green::turn_on();
         for (volatile int i = 0; i < 100000; i++);
-        led_green::turn_off();
+        bsp::led_green::turn_off();
         for (volatile int i = 0; i < 100000; i++);
     }
 
