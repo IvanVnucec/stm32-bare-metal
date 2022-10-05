@@ -1,7 +1,9 @@
+#include "mcu.hpp"
 #include "bsp.hpp"
 
 int main()
 {
+    mcu::init();
     bsp::init();
 
     while (true)

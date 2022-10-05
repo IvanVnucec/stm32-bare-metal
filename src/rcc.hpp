@@ -1,5 +1,6 @@
 #pragma once
 
+#include "periph.hpp"
 #include "reg.hpp"
 
 struct rcc : periph<0x40021000> {

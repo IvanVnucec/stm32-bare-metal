@@ -23,8 +23,6 @@ struct output_pin {
     static_assert(pin_n < 32);
 
     static void init() {
-        // init gpioc clock
-        rcc::apb2enr::write(1 << 4);
         // general purpose output push pull 
         gpio::crh::write(0b0011 << 20);
     }
