@@ -7,13 +7,13 @@
 
 template<std::uint32_t base>
 struct gpio : periph<base> {
-    using crl  = reg<gpio::base, 0x00>;
-    using crh  = reg<base, 0x04>;
-    using idr  = reg<base, 0x08>;
-    using odr  = reg<base, 0x0C>;
-    using bsrr = reg<base, 0x10>;
-    using brr  = reg<base, 0x14>;
-    using lckr = reg<base, 0x18>;
+    struct crl  : reg<base, 0x00> {};
+    struct crh  : reg<base, 0x04> {};
+    struct idr  : reg<base, 0x08> {};
+    struct odr  : reg<base, 0x0C> {};
+    struct bsrr : reg<base, 0x10> {};
+    struct brr  : reg<base, 0x14> {};
+    struct lckr : reg<base, 0x18> {};
 };
 
 using gpio_c = gpio<0x40011000>;
