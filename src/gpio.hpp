@@ -7,13 +7,13 @@
 
 template<std::uint32_t base>
 struct gpio : periph<base> {
-    struct crl  : reg<base, 0x00> {};
-    struct crh  : reg<base, 0x04> {};
-    struct idr  : reg<base, 0x08> {};
-    struct odr  : reg<base, 0x0C> {};
-    struct bsrr : reg<base, 0x10> {};
-    struct brr  : reg<base, 0x14> {};
-    struct lckr : reg<base, 0x18> {};
+    struct crl  : reg<base, 0x00, rw> {};
+    struct crh  : reg<base, 0x04, rw> {};
+    struct idr  : reg<base, 0x08, rw> {};
+    struct odr  : reg<base, 0x0C, rw> {};
+    struct bsrr : reg<base, 0x10, rw> {};
+    struct brr  : reg<base, 0x14, rw> {};
+    struct lckr : reg<base, 0x18, rw> {};
 };
 
 using gpio_c = gpio<0x40011000>;
@@ -21,7 +21,7 @@ using gpio_c = gpio<0x40011000>;
 template<typename gpio, int pin_n>
 struct output_pin {
     static constexpr int max_num_pins = 16;
-    static_assert(pin_n < max_num_pins);
+    static_assert(pin_n < max_num_pins, "STM32 has only 15 IO pins.");
 
     static void init() {
         // general purpose output push pull
