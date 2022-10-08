@@ -7,10 +7,10 @@ BUILD_DIR = build
 
 C_SOURCES =  \
 	src/stm32f1xx_it.c \
-	src/system_stm32f1xx.c
 
 CPP_SOURCES = \
 	src/main.cpp \
+	src/startup.cpp \
 
 ASM_SOURCES =  \
 	src/startup_stm32f103xb.s

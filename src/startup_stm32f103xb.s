@@ -45,6 +45,8 @@ defined in linker script */
 .word __bss_start
 /* end address for the .bss section. defined in linker script */
 .word __bss_end
+/* end of text */
+.word __etext
 
 .equ  BootRAM, 0xF108F85F
 /**
@@ -60,44 +62,12 @@ defined in linker script */
   .weak Reset_Handler
   .type Reset_Handler, %function
 Reset_Handler:
+  bl copy_data
+  bl clear_bss
+  bl __libc_init_array
 
-/* Copy the data segment initializers from flash to SRAM */
-  ldr r0, =__data_dst_start
-  ldr r1, =__data_dst_end
-  ldr r2, =__data_src_start
-  movs r3, #0
-  b LoopCopyDataInit
-
-CopyDataInit:
-  ldr r4, [r2, r3]
-  str r4, [r0, r3]
-  adds r3, r3, #4
-
-LoopCopyDataInit:
-  adds r4, r0, r3
-  cmp r4, r1
-  bcc CopyDataInit
-  
-/* Zero fill the bss segment. */
-  ldr r2, =__bss_start
-  ldr r4, =__bss_end
-  movs r3, #0
-  b LoopFillZerobss
-
-FillZerobss:
-  str  r3, [r2]
-  adds r2, r2, #4
-
-LoopFillZerobss:
-  cmp r2, r4
-  bcc FillZerobss
-
-/* Call the clock system intitialization function.*/
-    bl  SystemInit
-/* Call static constructors */
-    bl __libc_init_array
-/* Call the application's entry point.*/
   bl main
+
   bx lr
 .size Reset_Handler, .-Reset_Handler
 
