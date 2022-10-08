@@ -27,6 +27,7 @@ CP = $(PREFIX)objcopy
 SZ = $(PREFIX)size
 HEX = $(CP) -O ihex
 BIN = $(CP) -O binary -S
+MD5SUM = md5sum
  
 CPU = -mcpu=cortex-m3
 MCU = $(CPU) -mthumb $(FPU) $(FLOAT-ABI)
@@ -88,9 +89,11 @@ $(BUILD_DIR)/$(TARGET).elf: $(OBJECTS) $(CPPOBJECTS) Makefile
 
 $(BUILD_DIR)/%.hex: $(BUILD_DIR)/%.elf | $(BUILD_DIR)
 	$(HEX) $< $@
+	$(MD5SUM) $@
 
 $(BUILD_DIR)/%.bin: $(BUILD_DIR)/%.elf | $(BUILD_DIR)
 	$(BIN) $< $@
+	$(MD5SUM) $@
 
 $(BUILD_DIR):
 	mkdir $@
