@@ -80,18 +80,18 @@ SECTIONS
   } >FLASH
 
   /* used by the startup to initialize data */
-  _sidata = LOADADDR(.data);
+  __data_src_start = LOADADDR(.data);
 
   /* Initialized data sections goes into RAM, load LMA copy after code */
   .data : 
   {
     . = ALIGN(4);
-    _sdata = .;        /* create a global symbol at data start */
+    __data_dst_start = .;        /* create a global symbol at data start */
     *(.data)           /* .data sections */
     *(.data*)          /* .data* sections */
 
     . = ALIGN(4);
-    _edata = .;        /* define a global symbol at data end */
+    __data_dst_end = .;        /* define a global symbol at data end */
   } >RAM AT> FLASH
 
   
@@ -100,15 +100,15 @@ SECTIONS
   .bss :
   {
     /* This is used by the startup in order to initialize the .bss secion */
-    _sbss = .;         /* define a global symbol at bss start */
-    __bss_start__ = _sbss;
+    __bss_start = .;         /* define a global symbol at bss start */
+    __bss_start__ = __bss_start;
     *(.bss)
     *(.bss*)
     *(COMMON)
 
     . = ALIGN(4);
-    _ebss = .;         /* define a global symbol at bss end */
-    __bss_end__ = _ebss;
+    __bss_end = .;         /* define a global symbol at bss end */
+    __bss_end__ = __bss_end;
   } >RAM
 
   /* User_heap_stack section, used to check that there is enough RAM left */
