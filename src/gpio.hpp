@@ -32,8 +32,9 @@ struct output_pin {
         }
     }
 
-    static void set_state(const bool state) {
-        if (state == true)
+    template<bool state>
+    static void set_state() {
+        if constexpr (state == true)
             gpio::bsrr::write(1 << pin_n);
         else 
             gpio::bsrr::write(1 << (max_num_pins + pin_n));
@@ -43,5 +44,7 @@ struct output_pin {
 template<typename output_pin>
 struct inverted {
     static void init() { output_pin::init(); }
-    static void set_state(const bool state) { output_pin::set_state(not state); }
+
+    template<bool state>
+    static void set_state() { output_pin::template set_state<not state>(); }
 };
