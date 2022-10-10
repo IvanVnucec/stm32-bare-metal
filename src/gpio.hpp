@@ -21,14 +21,14 @@ using gpio_c = gpio<0x40011000>;
 template<typename gpio, int pin_n>
 struct output_pin {
     static constexpr int max_num_pins = 16;
-    static_assert(pin_n < max_num_pins, "STM32 has only 15 IO pins.");
+    static_assert(pin_n < max_num_pins, "STM32 has only 16 GPIO pins indexed from 0 to 15.");
 
     static void init() {
         // general purpose output push pull
         if constexpr (pin_n < max_num_pins/2) {
-            gpio::crl::write(0b0011 << 20);
+            gpio::crl::write(0b0011 << (pin_n * 4));
         } else {
-            gpio::crh::write(0b0011 << 20);
+            gpio::crh::write(0b0011 << ((pin_n - max_num_pins/2) * 4));
         }
     }
 
