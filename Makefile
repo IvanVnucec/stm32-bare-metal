@@ -10,7 +10,6 @@ C_SOURCES =  \
 
 CPP_SOURCES = \
 	src/main.cpp \
-	src/startup.cpp \
 
 ASM_SOURCES =  \
 	src/startup_stm32f103xb.s
