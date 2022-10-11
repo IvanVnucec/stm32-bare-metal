@@ -8,9 +8,7 @@ int main()
 
     while (true)
     {
-        bsp::led_green::turn_on();
-        for (volatile int i = 0; i < 100000; i++);
-        bsp::led_green::turn_off();
+        bsp::led_green::toggle();
         for (volatile int i = 0; i < 100000; i++);
     }
 

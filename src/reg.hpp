@@ -22,6 +22,13 @@ struct reg {
 
     static std::uint32_t read() { return mut::template read<addr>(); }
     static void write(const std::uint32_t val) { mut::template write<addr>(val); }
-    static void mask(const std::uint32_t val) { write(val | read()); }
-    static void clear(const std::uint32_t val) { write(~val & read()); }
+
+    template<std::uint32_t val>
+    static void mask() { write(val | read()); }
+
+    template<std::uint32_t val>
+    static void clear() { write(~val & read()); }
+
+    template<std::uint32_t val>
+    static void toggle() { write(val ^ read()); } 
 };

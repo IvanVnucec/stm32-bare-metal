@@ -9,5 +9,6 @@ namespace bsp {
 
     void init() {
         led_green_pin::init();
+        led_green_pin::set_state<false>();
     }
 }
