@@ -21,6 +21,7 @@ struct reg {
     static constexpr std::uint32_t addr = base + offset;
 
     static std::uint32_t read() { return mut::template read<addr>(); }
+
     static void write(const std::uint32_t val) { mut::template write<addr>(val); }
 
     template<std::uint32_t val>
@@ -31,4 +32,28 @@ struct reg {
 
     template<std::uint32_t val>
     static void toggle() { write(val ^ read()); } 
+
+    template<int bit_n>
+    static bool read_bit() {
+        static_assert(bit_n < 32);
+        return (read() & (1 << bit_n));
+    }
+
+    template<int bit_n>
+    static void set_bit() {
+        static_assert(bit_n < 32);
+        mask<1 << bit_n>();
+    }
+
+    template<int bit_n>
+    static void clear_bit() {
+        static_assert(bit_n < 32);
+        clear<1 << bit_n>();
+    }
+
+    template<int bit_n>
+    static void toggle_bit() {
+        static_assert(bit_n < 32);
+        toggle<1 << bit_n>();
+    }
 };

@@ -25,7 +25,7 @@ struct output_pin {
     }
 
     static void toggle_state() {
-        gpio::odr::template toggle<1 << pin_n>(); 
+        gpio::odr::template toggle_bit<pin_n>(); 
     }
 };
 
