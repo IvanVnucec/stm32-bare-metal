@@ -85,6 +85,7 @@ $(BUILD_DIR)/%.o: %.s $(LDSCRIPT) Makefile | $(BUILD_DIR)
 $(BUILD_DIR)/$(TARGET).elf: $(OBJECTS) $(CPPOBJECTS) Makefile
 	$(CC) $(OBJECTS) $(CPPOBJECTS) $(LDFLAGS) -o $@
 	$(SZ) $@
+	$(MD5SUM) $@
 
 $(BUILD_DIR)/%.hex: $(BUILD_DIR)/%.elf | $(BUILD_DIR)
 	$(HEX) $< $@
