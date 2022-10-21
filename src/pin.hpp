@@ -3,16 +3,15 @@
 #include "gpio.hpp"
 
 template<typename gpio, int pin_n>
-struct output_pin {
-    static constexpr int max_num_pins = 16;
-    static_assert(pin_n < max_num_pins, "STM32 has only 16 GPIO pins indexed from 0 to 15.");
+struct output {
+    static_assert(pin_n < gpio::max_num_pins, "STM32 has only 16 GPIO pins indexed from 0 to 15.");
 
     static void init() {
         // general purpose output push pull
-        if constexpr (pin_n < max_num_pins/2) {
+        if constexpr (pin_n < gpio::max_num_pins/2) {
             gpio::crl::write(0b0011 << (pin_n * 4));
         } else {
-            gpio::crh::write(0b0011 << ((pin_n - max_num_pins/2) * 4));
+            gpio::crh::write(0b0011 << ((pin_n - gpio::max_num_pins/2) * 4));
         }
     }
 
@@ -21,7 +20,11 @@ struct output_pin {
         if constexpr (state == true)
             gpio::bsrr::write(1 << pin_n);
         else
-            gpio::bsrr::write(1 << (max_num_pins + pin_n));
+            gpio::bsrr::write(1 << (gpio::max_num_pins + pin_n));
+    }
+
+    static bool get_state() {
+        return gpio::idr::template read_bit<pin_n>();
     }
 
     static void toggle_state() {
@@ -29,12 +32,37 @@ struct output_pin {
     }
 };
 
-template<typename output_pin>
-struct inverted {
-    static void init() { output_pin::init(); }
+template<typename gpio, int pin_n>
+struct input {
+    static_assert(pin_n < gpio::max_num_pins, "STM32 has only 16 GPIO pins indexed from 0 to 15.");
 
+    static void init() {
+        // TODO
+        if constexpr (pin_n < gpio::max_num_pins/2) {
+        } else {
+        }
+    }
+
+    static bool get_state() {
+        // TODO
+        return false;
+    }
+};
+
+template<typename mut>
+struct pin {
+    static void init() { mut::init(); }
     template<bool state>
-    static void set_state() { output_pin::template set_state<not state>(); }
+    static void set_state() { mut::template set_state<state>(); }
+    static bool get_state() { return mut::get_state(); }
+    static void toggle_state() { mut::toggle_state(); }
+};
 
-    static void toggle_state() { output_pin::toggle_state(); }
+template<typename pin>
+struct inverted {
+    static void init() { pin::init(); }
+    template<bool state>
+    static void set_state() { pin::template set_state<not state>(); }
+    static bool get_state() { return not pin::get_state(); }
+    static void toggle_state() { pin::toggle_state(); }
 };
