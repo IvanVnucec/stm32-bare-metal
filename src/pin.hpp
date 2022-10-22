@@ -11,9 +11,9 @@ struct output {
         constexpr std::uint32_t val = 0b0011;
 
         if constexpr (pin_n < gpio::max_num_pins/2) {
-            gpio::crl::write(val << (pin_n * 4));
+            gpio::crl::template mask<val << (pin_n * 4)>();
         } else {
-            gpio::crh::write(val << ((pin_n - gpio::max_num_pins/2) * 4));
+            gpio::crh::template mask<val << ((pin_n - gpio::max_num_pins/2) * 4)>();
         }
     }
 
@@ -43,9 +43,9 @@ struct input {
         constexpr std::uint32_t val = 0b1000;
 
         if constexpr (pin_n < gpio::max_num_pins/2) {
-            gpio::crl::write(val << (pin_n * 4));
+            gpio::crl::template mask<val << (pin_n * 4)>();
         } else {
-            gpio::crh::write(val << ((pin_n - gpio::max_num_pins/2) * 4));
+            gpio::crh::template mask<val << ((pin_n - gpio::max_num_pins/2) * 4)>();
         }
 
         // enable pull-down

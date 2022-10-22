@@ -10,10 +10,10 @@ struct gpio : periph<base> {
 
     struct crl  : reg<base, 0x00, rw> {};
     struct crh  : reg<base, 0x04, rw> {};
-    struct idr  : reg<base, 0x08, rw> {};
+    struct idr  : reg<base, 0x08, ro> {};
     struct odr  : reg<base, 0x0C, rw> {};
-    struct bsrr : reg<base, 0x10, rw> {};
-    struct brr  : reg<base, 0x14, rw> {};
+    struct bsrr : reg<base, 0x10, wo> {};
+    struct brr  : reg<base, 0x14, wo> {};
     struct lckr : reg<base, 0x18, rw> {};
 };
 

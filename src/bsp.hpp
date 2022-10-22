@@ -8,7 +8,7 @@ namespace bsp {
     using led_green_pin = inverted<pin<output<gpio_c, 13>>>;
     using led_green = led<led_green_pin>;
 
-    using button_pin = inverted<pin<input<gpio_a, 0>>>;
+    using button_pin = pin<input<gpio_a, 0>>;
     using pushbutton = button<button_pin>;
 
     void init() {
