@@ -18,3 +18,4 @@ struct gpio : periph<base> {
 };
 
 using gpio_c = gpio<0x40011000>;
+using gpio_a = gpio<0x40010800>;

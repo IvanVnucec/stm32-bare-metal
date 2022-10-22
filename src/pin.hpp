@@ -8,10 +8,12 @@ struct output {
 
     static void init() {
         // general purpose output push pull
+        constexpr std::uint32_t val = 0b0011;
+
         if constexpr (pin_n < gpio::max_num_pins/2) {
-            gpio::crl::write(0b0011 << (pin_n * 4));
+            gpio::crl::write(val << (pin_n * 4));
         } else {
-            gpio::crh::write(0b0011 << ((pin_n - gpio::max_num_pins/2) * 4));
+            gpio::crh::write(val << ((pin_n - gpio::max_num_pins/2) * 4));
         }
     }
 
@@ -37,15 +39,21 @@ struct input {
     static_assert(pin_n < gpio::max_num_pins, "STM32 has only 16 GPIO pins indexed from 0 to 15.");
 
     static void init() {
-        // TODO
+        // input pin
+        constexpr std::uint32_t val = 0b1000;
+
         if constexpr (pin_n < gpio::max_num_pins/2) {
+            gpio::crl::write(val << (pin_n * 4));
         } else {
+            gpio::crh::write(val << ((pin_n - gpio::max_num_pins/2) * 4));
         }
+
+        // enable pull-down
+        gpio::odr::template set_bit<pin_n>();
     }
 
     static bool get_state() {
-        // TODO
-        return false;
+        return gpio::idr::template read_bit<pin_n>();
     }
 };
 
