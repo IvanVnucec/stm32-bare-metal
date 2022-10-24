@@ -2,13 +2,42 @@
 
 #include "gpio.hpp"
 
-template<typename gpio, int pin_n>
+enum class output_type {
+    push_pull,
+    open_drain
+};
+
+enum class output_speed {
+    mhz_10,
+    mhz_2,
+    mhz_50
+};
+
+template<typename gpio, int pin_n, output_type _type, output_speed _speed>
 struct output {
     static_assert(pin_n < gpio::max_num_pins, "STM32 has only 16 GPIO pins indexed from 0 to 15.");
 
+    static constexpr std::uint32_t get_cr() {
+        std::uint32_t cr = 0b0000;
+
+        if constexpr (_type == output_type::push_pull)
+            cr |= 0b0000;
+        else
+            cr |= 0b0100;
+
+        if constexpr (_speed == output_speed::mhz_10)
+            cr |= 0b0001;
+        else if constexpr (_speed == output_speed::mhz_2)
+            cr |= 0b0010;
+        else
+            cr |= 0b0011;
+
+        return cr;
+    }
+
     static void init() {
         // general purpose output push pull
-        constexpr std::uint32_t val = 0b0011;
+        constexpr std::uint32_t val = get_cr();
 
         if constexpr (pin_n < gpio::max_num_pins/2) {
             gpio::crl::template mask<val << (pin_n * 4)>();
